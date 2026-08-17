@@ -6,6 +6,7 @@
 
 - [[wiki/work/index|אינדקס עבודה]] — נקודת הכניסה לידע מקצועי.
 - [[wiki/work/backend-interviews/index|בסיס הידע שלי ב־Backend]] — ידע מצטבר ללמידה ולחזרה לקראת ראיונות.
+- [[wiki/work/backend-interviews/request-id|Request ID]] — דף סינתטי לבדיקת תהליך הקליטה.
 
 ## היסטוריה
 
