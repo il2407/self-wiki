@@ -44,7 +44,8 @@ in Obsidian and an LLM agent can update through reviewable file changes.
 - Git restores earlier reviewed versions of text and configuration.
 - GitHub Private stores the reviewed `main` branch off-device at
   `https://github.com/il2407/self-wiki`.
-- The temporary pre-migration copy is retained until acceptance testing passes.
+- The temporary pre-migration copy was moved to macOS Trash after acceptance
+  testing passed.
 - A local commit is not considered backed up until it has been pushed to
   `origin/main`.
 
@@ -71,3 +72,5 @@ Passed on 2026-08-17.
   `c34f2e5db89df10aaacc5a675a19624549deebee16b48408b0bbc298f0bba462`
 - After rollback, the derived wiki state matched the pre-ingestion state while
   the append-only operation log retained both events.
+- The synthetic source was removed after the test with explicit user approval;
+  it remains recoverable from Git commit `f9c9ced`.

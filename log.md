@@ -32,3 +32,10 @@
 - המקור `raw/work/system-test-request-id.md` נשמר ללא שינוי כדי לאמת הפרדה בין
   מקור לבין ידע נגזר.
 - Commit הקליטה נשאר בהיסטוריית Git וניתן לבדיקה בעתיד.
+
+## [2026-08-17] cleanup | Acceptance-test artifacts
+
+- מקור הבדיקה `raw/work/system-test-request-id.md` נמחק באישור מפורש לאחר
+  השלמת הבדיקה; הוא נשאר ניתן לשחזור מהיסטוריית Git.
+- העותק הזמני של ה־Vault הועבר ל־macOS Trash בשם
+  `self-wiki-pre-migration-2026-08-17` וניתן לשחזור כל עוד ה־Trash לא רוקן.
