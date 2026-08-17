@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+
+# Obsidian per-device UI state
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache/
+.trash/
+
+# Editor and temporary files
+*.swp
+*.tmp
+*~
+
+# Secrets must never enter the knowledge base or Git history
+.env
+.env.*
+!.env.example
+
