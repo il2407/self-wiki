@@ -2,10 +2,9 @@
 type: source-catalog
 domain: work
 topic: backend-interviews
-status: active
+status: empty
 updated: 2026-08-17
-sources:
-  - raw/work/system-test-request-id.md
+sources: []
 ---
 
 # קטלוג המקורות
@@ -15,4 +14,4 @@ sources:
 
 | מקור | נושא | דפים שהושפעו | מגבלות או הערות |
 |---|---|---|---|
-| `raw/work/system-test-request-id.md` | Request ID ו־correlation בין לוגים | [[request-id]] | מקור סינתטי לבדיקת התשתית; אינו אסמכתה מקצועית |
+

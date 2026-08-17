@@ -25,3 +25,10 @@
 - נקלט מקור הבדיקה `raw/work/system-test-request-id.md` לאחר אישור תוכנית הקליטה.
 - נוצר הדף `wiki/work/backend-interviews/request-id.md` ועודכנו האינדקסים וקטלוג המקורות.
 - המקור והדף מסומנים כסינתטיים ואינם נחשבים אסמכתה מקצועית.
+
+## [2026-08-17] rollback | Synthetic Request ID acceptance test
+
+- השינויים הנגזרים של בדיקת הקליטה הוסרו מה־Wiki ומהאינדקסים.
+- המקור `raw/work/system-test-request-id.md` נשמר ללא שינוי כדי לאמת הפרדה בין
+  מקור לבין ידע נגזר.
+- Commit הקליטה נשאר בהיסטוריית Git וניתן לבדיקה בעתיד.
