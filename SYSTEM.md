@@ -15,7 +15,7 @@ in Obsidian and an LLM agent can update through reviewable file changes.
 | Obsidian | Human reading, navigation, backlinks, and graph view |
 | Codex | Ingestion, synthesis, querying, linting, and controlled file updates |
 | Git | Local history, diffs, auditability, and rollback |
-| Private backup | Optional off-device recovery; configured only after a privacy decision |
+| GitHub Private | Off-device recovery through `origin` at `il2407/self-wiki` |
 
 ## Trust boundaries
 
@@ -25,7 +25,9 @@ in Obsidian and an LLM agent can update through reviewable file changes.
 - Querying does not modify files unless the user explicitly asks.
 - Secrets, credentials, and employer-confidential information do not belong in
   the vault.
-- A remote is not configured by default.
+- The configured remote is private. Changing its visibility or adding another
+  remote requires an explicit privacy decision.
+- Authentication credentials stay outside the vault and must never be committed.
 
 ## Normal workflow
 
@@ -40,9 +42,11 @@ in Obsidian and an LLM agent can update through reviewable file changes.
 ## Recovery model
 
 - Git restores earlier reviewed versions of text and configuration.
+- GitHub Private stores the reviewed `main` branch off-device at
+  `https://github.com/il2407/self-wiki`.
 - The temporary pre-migration copy is retained until acceptance testing passes.
-- An off-device backup will be selected separately; Git without a remote is not
-  sufficient protection against disk loss.
+- A local commit is not considered backed up until it has been pushed to
+  `origin/main`.
 
 ## Acceptance criteria
 
@@ -53,5 +57,5 @@ The infrastructure is ready for real knowledge only when:
 - Git shows a clean baseline;
 - a synthetic test source can be ingested with an approved diff;
 - the test change can be rolled back without affecting `raw/`;
-- no remote or external sync receives data without an explicit decision.
-
+- the configured GitHub repository is private and synchronized only after an
+  explicit commit and push.
