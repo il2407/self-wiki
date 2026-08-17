@@ -59,3 +59,15 @@ The infrastructure is ready for real knowledge only when:
 - the test change can be rolled back without affecting `raw/`;
 - the configured GitHub repository is private and synchronized only after an
   explicit commit and push.
+
+## Acceptance result
+
+Passed on 2026-08-17.
+
+- Synthetic source commit: `f9c9ced`
+- Approved ingestion commit: `20f4bc5`
+- Derived-content rollback commit: `2e33bb1`
+- The source SHA-256 remained unchanged during rollback:
+  `c34f2e5db89df10aaacc5a675a19624549deebee16b48408b0bbc298f0bba462`
+- After rollback, the derived wiki state matched the pre-ingestion state while
+  the append-only operation log retained both events.
