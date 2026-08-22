@@ -1,0 +1,33 @@
+flowchart TB
+    subgraph CREATION[Ad Creation Async single or bulk max 50]
+        UI_CREATE[CreateAdModal content adset copy url_tags expiration partner page]
+        AC_CTRL[AdCreationApiController POST create single bulk]
+        AC_SVC[AdCreationService validate expiration url_tags resolution]
+        SQS_PUB[AdCreationSqsService]
+        SQS_Q2[(AWS SQS)]
+        LAM_CREATE[hfbi-create-ad-task.py blocking check agency setup Meta orchestration]
+        HFBI_CREATE[AdsManagementService create_ad_with_creative upload media creative ad]
+        SNS2[(AWS SNS status broadcast)]
+    end
+
+    subgraph EDIT_COPY[Edit Copy Sync]
+        UI_EDIT[EditAdModal name status expiration]
+        UI_DUP[DuplicateAdModal new adset target]
+        AM_CTRL[AdsManagementApiController edit copy endpoints]
+        AM_SVC[AdsManagementService editAd copyAd]
+        HFBI_H2[HfbiHandler JWT signed HTTP]
+        HFBI_EDIT[HFBI AdsManagementService edit_ad copy_ad]
+    end
+
+    META_ACTIVE[Meta Graph API]
+    DB_TASKS2[(ad_creation_tasks)]
+    DB_BLOCKED2[(ad_creation_blocked)]
+    DB_META_A[(ads_metadata)]
+
+    UI_CREATE --> AC_CTRL --> AC_SVC --> SQS_PUB --> SQS_Q2 --> LAM_CREATE --> HFBI_CREATE --> META_ACTIVE
+    AC_SVC --> DB_TASKS2
+    LAM_CREATE --> DB_TASKS2 & DB_BLOCKED2
+    LAM_CREATE --> SNS2
+
+    UI_EDIT & UI_DUP --> AM_CTRL --> AM_SVC --> HFBI_H2 --> HFBI_EDIT --> META_ACTIVE
+    HFBI_EDIT --> DB_META_A

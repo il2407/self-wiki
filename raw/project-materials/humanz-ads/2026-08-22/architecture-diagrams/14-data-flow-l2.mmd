@@ -1,0 +1,39 @@
+flowchart TB
+    subgraph SOURCE_DF[Source Meta Graph API]
+        M_INS[Campaign Insights spend impressions clicks purchases ROAS CTR attribution windows breakdowns]
+        M_META[Ad Metadata id name status creative page IDs url_tags]
+        M_COMM[Instagram Comments comment_id text username platform like_count]
+    end
+
+    subgraph INGEST_DF[Ingest HFBI plus Lambdas]
+        INS_ING[hfbi-fetch-ads to AdsInsightsService breakdowns attribution currency]
+        META_ING[hfbi-fetch-ads-metadata extract_and_insert_ads_metadata]
+        COMM_ING[hfbi-fetch-ads-comments commentsDal upsert_media_comments]
+    end
+
+    subgraph STORE_DF[Store PostgreSQL]
+        S_PERF[(ads_posts_analysis per ad daily rows attribution columns)]
+        S_META[(ads_metadata per ad details creative info)]
+        S_COMM[(ads_media_comments per comment rows classification)]
+    end
+
+    subgraph SERVE_DF[Serve Backend API]
+        STATS_Q[AdsManagementDal.getAdStats SELECT JOIN aggregate]
+        ATTR_Q[Apply attribution window 1d_click 7d_click 1d_view]
+        COMM_Q[AdsManagementDal.getAdComments classification filter]
+    end
+
+    subgraph DISPLAY_DF[Display reactapp]
+        TBL_DF[AdsAnalyticsTable stats columns]
+        CUBE_DF[AdsAnalyticsCubes KPI totals]
+        COMM_UI_DF[CommentsBreakdownModal classifications]
+        ATTR_UI_DF[Attribution Window Selector]
+    end
+
+    M_INS --> INS_ING --> S_PERF
+    M_META --> META_ING --> S_META
+    M_COMM --> COMM_ING --> S_COMM
+
+    S_PERF & S_META --> STATS_Q --> ATTR_Q --> TBL_DF & CUBE_DF
+    S_COMM --> COMM_Q --> COMM_UI_DF
+    ATTR_UI_DF --> ATTR_Q

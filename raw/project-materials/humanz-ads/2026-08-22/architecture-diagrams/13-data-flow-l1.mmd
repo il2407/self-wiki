@@ -1,0 +1,11 @@
+flowchart LR
+    META_DF[Meta Graph API]
+    INGEST[HFBI Sync Layer]
+    STORE[(Metrics Database)]
+    SERVE[Platform API]
+    DISPLAY[Ads Manager Dashboard]
+
+    META_DF -->|raw insights comments metadata| INGEST
+    INGEST -->|normalized rows per ad per day| STORE
+    STORE -->|aggregated query filtered by date and adset| SERVE
+    SERVE -->|typed JSON AdStatsResponse| DISPLAY

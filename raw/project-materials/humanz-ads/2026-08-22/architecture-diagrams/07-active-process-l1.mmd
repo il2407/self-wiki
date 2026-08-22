@@ -1,0 +1,23 @@
+flowchart LR
+    USER[Advertiser]
+
+    subgraph ASYNC_PATH[Ad Creation Async]
+        UI_C[Create Ad Modal]
+        BE_Q[Platform API plus Task Queue]
+        LAM_X[Lambda Executor]
+    end
+
+    subgraph SYNC_PATH[Edit Copy Sync]
+        UI_E[Edit or Duplicate Modal]
+        BE_S[Platform API Direct Call]
+    end
+
+    HFBI_X[HFBI Meta Integration]
+    META_X[Meta Graph API]
+    DB_X[(PostgreSQL)]
+
+    USER --> UI_C --> BE_Q -->|async via SQS| LAM_X --> HFBI_X
+    USER --> UI_E --> BE_S --> HFBI_X
+    HFBI_X <-->|create edit copy| META_X
+    HFBI_X --> DB_X
+    BE_Q --> DB_X

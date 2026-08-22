@@ -1,0 +1,50 @@
+flowchart TB
+    subgraph TRIGGERS[Scheduled Lambdas CloudWatch]
+        L_CAMP[hfbi-fetch-ads-campaigns campaign registry]
+        L_META_L[hfbi-fetch-ads-metadata ad details]
+        L_INSIGHTS_L[hfbi-fetch-ads performance metrics]
+        L_COMMENTS_L[hfbi-fetch-ads-comments Instagram comments]
+        L_SPEND_L[hfbi-fetch-monthly-spend monthly rollups]
+    end
+
+    SQS_INNER[(Inner SQS batch queue)]
+
+    subgraph HFBI_PIPELINE[HFBI Integration Layer]
+        CAMP_EP[POST /adsapi/update_humanz_ad_campaigns]
+        META_EP[POST /adsapi/update_ad_campaign_metadata/id]
+        INS_EP[POST /adsapi/update_ad_campaign_insights/id]
+        COMM_EP[POST /adsapi/fetch_campaign_ig_comments/id]
+        SPEND_EP[POST /adsapi/update_campaign_monthly_spend/id]
+        INSIGHTS_SVC2[AdsInsightsService plus AdsIGFGApiDal]
+    end
+
+    META_API_P[Meta Graph API]
+
+    subgraph DB_TABLES[PostgreSQL Analytics Store]
+        CAMP_TBL[(hfbi_ads_campaign)]
+        META_TBL[(ads_metadata)]
+        PERF_TBL[(ads_posts_analysis)]
+        COMM_TBL[(ads_media_comments)]
+    end
+
+    subgraph READ_LAYER[Backend API Read Layer]
+        STATS_EP[GET /ads_management/ads/stats]
+        COMM_EP_BE[GET /ads_management/ads/comments]
+        ADS_DAL[AdsManagementDal]
+    end
+
+    subgraph DISPLAY_LAYER[Frontend Display]
+        TABLE_C[AdsAnalyticsTable and AdsAnalyticsCubes]
+        COMMENTS_C[CommentsBreakdownModal]
+    end
+
+    L_CAMP --> CAMP_EP --> INSIGHTS_SVC2 --> META_API_P
+    L_META_L --> META_EP --> INSIGHTS_SVC2
+    L_INSIGHTS_L --> INS_EP --> SQS_INNER --> INSIGHTS_SVC2
+    L_COMMENTS_L --> COMM_EP --> INSIGHTS_SVC2
+    L_SPEND_L --> SPEND_EP --> INSIGHTS_SVC2
+
+    INSIGHTS_SVC2 --> CAMP_TBL & META_TBL & PERF_TBL & COMM_TBL
+
+    PERF_TBL & META_TBL --> ADS_DAL --> STATS_EP --> TABLE_C
+    COMM_TBL --> ADS_DAL --> COMM_EP_BE --> COMMENTS_C

@@ -1,4 +1,4 @@
 # Knowledge Gaps Index
 
-No knowledge gaps have been recorded yet.
-
+- [Humanz Ads reconstruction gaps](humanz-ads-reconstruction.md) - ownership,
+  chronology, guarantees, scale, decisions, incidents, and metric validation.

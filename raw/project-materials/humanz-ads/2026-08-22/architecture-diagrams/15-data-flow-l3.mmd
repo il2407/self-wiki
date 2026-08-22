@@ -1,0 +1,15 @@
+flowchart LR
+    META_RAW[Meta Graph API AD_FIELDS actions action_values purchase_roas spend attribution windows breakdowns]
+    PARSE_HF[AdsInsightsService update_campaign_insights map action types convert currency break into daily rows]
+
+    DB_PERF_3[(ads_posts_analysis ad_id auction_id date_start spend impressions clicks purchases attribution custom conversions)]
+    DB_META_3[(ads_metadata ad_name adset campaign status ig_media fb_post custom conversion url_tags expiration)]
+    DB_COMM_3[(ads_media_comments comment_id text username timestamp like_count replies classification)]
+
+    SQL_DETAIL[AdsManagementDal.getAdStats JOIN ads_posts_analysis ads_metadata hfbi_ads_campaign filter date and auction group by ad and adset]
+    RESPONSE_DF[AdStatsResponse ads AdStats spend impressions clicks purchases value ROAS CTR hookRate urlTags attributionWindow customConversions]
+    TABLE_DF_3[AdsAnalyticsTable filters campaign adset date attribution window row actions edit duplicate details comments]
+
+    META_RAW --> PARSE_HF
+    PARSE_HF --> DB_PERF_3 & DB_META_3 & DB_COMM_3
+    DB_PERF_3 & DB_META_3 --> SQL_DETAIL --> RESPONSE_DF --> TABLE_DF_3

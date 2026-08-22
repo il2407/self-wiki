@@ -1,0 +1,46 @@
+flowchart TB
+    subgraph FE_FILES[reactapp AdsAnalytics files]
+        FF1[AdsAnalyticsTab.tsx AdsAnalyticsTable.tsx AdsAnalyticsCubes.tsx]
+        FF2[CreateAdModal.tsx createAdModal.utils.ts metaCampaignSelectShared.tsx]
+        FF3[EditAdModal.tsx DuplicateAdModal.tsx AdDetailsModal.tsx CommentsBreakdownModal.tsx]
+        FF4[AdsSettingsModal.tsx useAdsSettings.ts adsComponentRegistry.ts]
+        FF5[AdsNameTemplate.tsx MetaAdsAttributionTable.tsx AdMediaContent.tsx]
+    end
+
+    subgraph BE_FILES[backend Java files]
+        BF1[api ads_management AdsManagementApiController AdsManagementService exceptions]
+        BF2[api ad_creation AdCreationApiController AdCreationService]
+        BF3[api ads_partner_management controller service]
+        BF4[api campaign_ads_settings controller service]
+        BF5[dal postgres AdsManagementDal AdsPartnerManagementDal]
+        BF6[dal external hfbi HfbiHandler HfbiHandlerHttpImpl]
+        BF7[dal external aws AdCreationSqsService AWSExternalServices]
+        BF8[swagger ads_management definitions routes]
+    end
+
+    subgraph HFBI_FILES[hfbi app src files]
+        HF1[controllers adsApi.py ads_media_controller.py]
+        HF2[services ads_management_service.py ads_insights_service.py ads_media_service.py]
+        HF3[dal AdsIGFGApiDal.py utils Constants.py]
+        HF4[dal postgres apiDal.py commentsDal.py]
+        HF5[sns ad_creation.py publish_ad_creation_status]
+    end
+
+    subgraph LAM_FILES[hfbi Lambdas files]
+        LF1[hfbi-create-ad-task.py hfbi-create-ad-task-humanzplus.py]
+        LF2[hfbi-fetch-ads.py producer consumer]
+        LF3[hfbi-fetch-ads-campaigns.py metadata monthly spend]
+        LF4[hfbi-fetch-ads-comments.py video data campaign story s3 sync]
+    end
+
+    subgraph DB_OWN[PostgreSQL schema ownership]
+        DO1[(Backend managed ad_creation_tasks blocked partner pages campaign settings)]
+        DO2[(HFBI managed ads_metadata posts_analysis comments campaigns saved ids)]
+        DO3[(Shared read hfbi_users exchange_rates auction_ad_accounts page permissions)]
+    end
+
+    FE_FILES -->|OpenAPI generated client| BE_FILES
+    BE_FILES -->|HfbiHandlerHttpImpl Authorization Bearer JWT| HFBI_FILES
+    BE_FILES -->|AdCreationSqsService to SQS ad_creation_queue| LAM_FILES
+    LAM_FILES -->|HTTP POST /adsapi| HFBI_FILES
+    BE_FILES & HFBI_FILES & LAM_FILES <--> DB_OWN

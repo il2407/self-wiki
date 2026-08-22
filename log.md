@@ -24,3 +24,10 @@ Append entries using this format:
 - Inputs: [current CV](raw/resume/2026-08-22-ido-lev-cv.pdf)
 - Outputs: [candidate profile](domains/interviews/candidate-profile.md), [skill evidence map](shared/skills/backend-evidence-map.md), [Humanz Ads discovery page](shared/projects/humanz-ads.md)
 - Notes: CV claims remain recalled until ownership, metrics, and architecture are confirmed through reconstruction
+
+## [2026-08-22] ingest | authorized Humanz Ads architecture source set
+
+- Domain: interviews
+- Inputs: [source-set catalog](raw/project-materials/humanz-ads/2026-08-22/README.md), [system mapping](raw/project-materials/humanz-ads/2026-08-22/ads-system.docx), and 18 L1-L3 Mermaid diagrams
+- Outputs: [project overview](shared/projects/humanz-ads.md), [architecture](shared/projects/humanz-ads-architecture.md), [data flows](shared/projects/humanz-ads-data-flows.md), [risk and decision prompts](shared/projects/humanz-ads-risks-and-decisions.md), and [interview brief](domains/interviews/projects/humanz-ads.md)
+- Notes: user confirmed authorization to retain the internal materials in the private repository; no credential values were detected; system structure is documented, while personal ownership, chronology, scale, incidents, and impact remain unresolved

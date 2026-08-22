@@ -48,8 +48,11 @@ alternatives, incidents, or business impact.
 - Cite a section or heading when the source is long.
 - Preserve disagreements between sources.
 - Keep proposed interview phrasing separate from historical facts.
-- Do not ingest secrets, credentials, personal customer data, proprietary source
-  code, or confidential employer material. Prefer sanitized summaries.
+- Never ingest secrets, credentials, personal customer data, or proprietary
+  source code. Employer material may be stored only after the user explicitly
+  confirms they are authorized to retain it and the repository visibility is
+  appropriate. Record that authorization with the source; otherwise prefer a
+  sanitized summary.
 
 ## Operations
 
@@ -92,4 +95,3 @@ unknowns. Do not silently rewrite uncertain content during lint.
 - Prefer small, focused pages over long catch-all documents.
 - Update `updated` in frontmatter after a substantive edit.
 - Append to `log.md`; do not rewrite its history.
-

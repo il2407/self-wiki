@@ -1,0 +1,50 @@
+flowchart TB
+    subgraph BE_WRITE[Backend Write Operations]
+        BE_INSERT[AdCreationService INSERT ad_creation_tasks status pending]
+        BE_UPD[AdsManagementDal UPDATE ads_metadata after edit and UPSERT attribution windows]
+        BE_PART[AdsPartnerManagementDal partnership pages CRUD]
+    end
+
+    subgraph HFBI_WRITE[HFBI Write Operations]
+        HF_MG[AdsManagementService UPSERT ads_metadata INSERT bo_saved_ad_ids]
+        HF_INS[AdsInsightsService INSERT ads_posts_analysis UPSERT ads_metadata]
+        HF_COMM[commentsDal upsert_media_comments]
+        HF_CAMP[apiDal extract_and_insert_campaigns]
+    end
+
+    subgraph LAM_WRITE[Lambda Write Operations]
+        LAM_TASK[hfbi-create-ad-task UPDATE task status INSERT ad_creation_blocked]
+        LAM_SYNC[hfbi-fetch-ads UPDATE hfbi_ads_campaign last_successful_update permission errors]
+    end
+
+    subgraph SHARED_TABLES[Shared PostgreSQL Tables]
+        PG1[(ad_creation_tasks)]
+        PG2[(ads_metadata)]
+        PG3[(ads_posts_analysis)]
+        PG4[(ads_media_comments)]
+        PG5[(hfbi_ads_campaign)]
+        PG6[(ad_creation_blocked)]
+        PG7[(hfbi_users Facebook access tokens)]
+        PG8[(exchange_rates multi currency)]
+    end
+
+    subgraph SHARED_CLIENT[AdsIGFGApiDal.py Shared Meta Client]
+        MC_INSIGHTS[get_campaign_ads_insights fields attribution windows]
+        MC_CREATE[create_ad create_ad_creative upload_video upload_image]
+        MC_EDIT[edit_ad copy_ad]
+        META_ENDPOINT[graph.facebook.com v22]
+        MC_INSIGHTS & MC_CREATE & MC_EDIT --> META_ENDPOINT
+    end
+
+    BE_INSERT --> PG1
+    BE_UPD --> PG2
+    LAM_TASK --> PG1 & PG6
+    HF_MG --> PG2
+    HF_INS --> PG3 & PG2
+    HF_COMM --> PG4
+    HF_CAMP --> PG5
+    LAM_SYNC --> PG5
+
+    PG7 -->|read access tokens| HF_MG & HF_INS
+    PG7 -->|read tokens for Meta calls| LAM_TASK
+    PG8 -->|convert_currency_amount| HF_INS

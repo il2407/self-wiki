@@ -1,0 +1,55 @@
+sequenceDiagram
+    actor User
+    participant FE as CreateAdModal.tsx
+    participant BE as AdCreationApiController
+    participant SVC as AdCreationService
+    participant DAL as AdsManagementDal
+    participant SQS as AWS SQS
+    participant LAM as hfbi-create-ad-task.py
+    participant HFBI as AdsManagementService hfbi
+    participant META as Meta Graph API
+    participant SNS as AWS SNS
+
+    User->>FE: Fill content adset copy url_tags expiration media_assets
+    FE->>BE: POST create ad request
+    BE->>SVC: createAdTaskCore(request)
+    SVC->>SVC: validate expiration_time > now
+    SVC->>SVC: validate url_tags size <= 20
+    SVC->>SVC: validate resolution is 9:16 4:5 or unknown
+    SVC->>DAL: INSERT ad_creation_tasks status pending
+    SVC->>SQS: SendMessage task_id
+    BE-->>FE: 202 Accepted taskId
+    FE->>FE: Poll GET ad status
+
+    SQS-->>LAM: Trigger task_id
+    LAM->>DAL: SELECT ad_creation_tasks
+    LAM->>DAL: SELECT ad_creation_blocked
+
+    alt Not blocked
+        LAM->>DAL: UPDATE status prechecks
+        LAM->>HFBI: GET page agencies
+        HFBI->>META: GET page agencies
+        LAM->>HFBI: POST add business as agency
+        HFBI->>META: POST business partners
+        LAM->>HFBI: POST connect page to group
+        LAM->>DAL: UPDATE status processing
+        LAM->>HFBI: POST create_ad_with_creative
+        HFBI->>META: Upload image or video asset
+        META-->>HFBI: image_hash or video_id
+        HFBI->>META: Create ad creative
+        META-->>HFBI: creative_id
+        HFBI->>META: Create ad
+        META-->>HFBI: ad_id
+        HFBI-->>LAM: ad_id
+        LAM->>DAL: UPDATE task completed with created_ad_id
+        LAM->>DAL: INSERT bo_saved_ad_ids
+        LAM->>SNS: Publish completed
+    else Blocked after repeated failures
+        LAM->>DAL: INSERT ad_creation_blocked
+        LAM->>DAL: UPDATE task failed
+        LAM->>SNS: Publish failed
+    end
+
+    FE->>BE: GET ad status taskId
+    BE->>DAL: SELECT task
+    BE-->>FE: completed
