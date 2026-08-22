@@ -1,5 +1,9 @@
 # Interview Preparation Index
 
+## Candidate context
+
+- [Candidate profile](candidate-profile.md)
+
 ## Modes
 
 - [Coding](coding/index.md)
@@ -13,9 +17,8 @@
 
 ## Recommended first sequence
 
-1. Ingest the current resume under `raw/resume/`.
-2. Create one shared project page and reconstruct it with evidence.
+1. Review the current candidate profile and unresolved CV claims.
+2. Reconstruct [Humanz Ads](../../shared/projects/humanz-ads.md) with evidence.
 3. Ingest one real job description.
 4. Run one project mock interview.
 5. Run `npm run wiki -- lint` and review the gaps index.
-

@@ -1,4 +1,3 @@
 # Skills Index
 
-No skill pages have been created yet.
-
+- [Backend skill evidence map](backend-evidence-map.md) - initial CV-derived map.

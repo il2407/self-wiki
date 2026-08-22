@@ -1,4 +1,3 @@
 # Projects Index
 
-No projects have been ingested yet.
-
+- [Humanz Ads](humanz-ads.md) - discovery in progress; currently based on the CV.
