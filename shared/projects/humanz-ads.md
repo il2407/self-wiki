@@ -8,6 +8,7 @@ sources:
   - ../../raw/resume/2026-08-22-ido-lev-cv.pdf
   - ../../raw/project-materials/humanz-ads/2026-08-22/ads-system.docx
   - ../../raw/project-materials/humanz-ads/2026-08-22/architecture-diagrams/01-architecture-overview-l1.mmd
+  - ../../raw/session-notes/2026-08-22-humanz-ads-reconstruction-01.md
 tags: [backend, ads, distributed-systems, integrations]
 ---
 
@@ -21,9 +22,11 @@ workers and messaging, PostgreSQL, and the Meta Graph API. The provided system
 materials document both interactive ad-management flows and scheduled analytics
 ingestion.
 
-The CV states that Ido worked on the platform as a Backend Developer and later
-as its hands-on Backend Tech Lead. The personal ownership boundary, chronology,
-scale, and outcome measurements still require Ido's confirmation.
+Ido directly confirmed that no Humanz Ads system existed at the starting point.
+He and the CTO built the infrastructure from zero, with Ido responsible for
+architecture planning and code implementation. The exact responsibility split,
+later team participation, chronology, scale, and outcome measurements still
+require reconstruction.
 
 ## Business capabilities documented in the sources
 
@@ -69,12 +72,20 @@ see [data flows](humanz-ads-data-flows.md).
 - **Shared infrastructure:** PostgreSQL, SQS, SNS, S3, credentials, and external
   Meta endpoints.
 
-These are system-level boundaries documented in the source set, not statements
-about which parts Ido personally implemented.
+These are system-level boundaries documented in the source set. Ido confirmed
+responsibility for architecture planning and code implementation across the
+greenfield project, in collaboration with the CTO. Component-level authorship
+and later team ownership remain unresolved.
 
-## CV-derived personal responsibility
+## Personal responsibility
 
-The CV attributes the following to Ido, currently with `recalled` status:
+Directly confirmed by Ido:
+
+- The project was greenfield; there was no pre-existing Humanz Ads system.
+- Ido and the CTO built the infrastructure from zero.
+- Ido was responsible for architecture planning and code implementation.
+
+The CV also attributes the following to Ido, currently with `recalled` status:
 
 - Backend architecture and technical roadmap.
 - Meta Ads and external API integrations.
@@ -99,8 +110,10 @@ The CV attributes the following to Ido, currently with `recalled` status:
 ## Reconstruction status
 
 - Business context: partial
-- Chronology: unknown
-- Personal ownership boundaries: unknown
+- Starting point: confirmed greenfield
+- Chronology: partial; build phases and dates unknown
+- Personal ownership boundaries: partial; project-level responsibility confirmed,
+  component-level and collaboration split unknown
 - Architecture: documented, personal validation pending
 - Request and data flows: documented, personal validation pending
 - Scale and SLOs: unknown
@@ -115,7 +128,9 @@ The CV attributes the following to Ido, currently with `recalled` status:
 | The system uses React, Java/Spring, Python/FastAPI, PostgreSQL, AWS messaging/workers, and Meta Graph API | verified | Provided system document and architecture diagrams | Validate that this represents the relevant production period |
 | Ad creation uses a DB task, SQS, Lambda, HFBI, Meta, and frontend polling | verified | Active-process L2/L3 diagrams and DOCX ad-creation flow | Confirm retries, idempotency, and exact status lifecycle |
 | Analytics are synchronized asynchronously and served from PostgreSQL | verified | Passive-process and data-flow diagrams | Confirm schedules, freshness expectations, and production scale |
-| Ido architected and built Humanz Ads from scratch | recalled | Current CV | Define pre-existing components, phases, team, and direct ownership |
+| Humanz Ads was greenfield with no pre-existing system | verified | Direct confirmation in reconstruction session 01 | Build phases and dates |
+| Ido and the CTO built the infrastructure from zero | verified | Direct confirmation in reconstruction session 01 | Later contributors and responsibility split |
+| Ido was responsible for architecture planning and code implementation | verified | Direct confirmation in reconstruction session 01 | Component-level examples and decision boundaries |
 | Ad creation decreased from 15 minutes to 20 seconds | recalled | Current CV | Baseline, measurement method, and workflow boundaries |
 | Approvals decreased from 2 days to 3 seconds | recalled | Current CV | Define approval and how the result was measured |
 | Work contributed to 30% Q1 and 100%+ overall revenue growth | recalled | Current CV | Period, attribution logic, and source of figures |
@@ -123,7 +138,8 @@ The CV attributes the following to Ido, currently with `recalled` status:
 
 ## Highest-priority open questions
 
-1. What existed when Ido joined, and what was added or redesigned in each role?
+1. What was the first production use case, and in what order were the major
+   components built?
 2. Which services, flows, tables, and operational responsibilities did Ido own
    directly versus co-design or inherit?
 3. What were the task states, retry rules, idempotency strategy, and failure
@@ -144,6 +160,7 @@ for the reconstruction sequence and interviewer question bank.
 ## Sources
 
 - [Current CV](../../raw/resume/2026-08-22-ido-lev-cv.pdf)
+- [Reconstruction session 01](../../raw/session-notes/2026-08-22-humanz-ads-reconstruction-01.md)
 - [Authorized source-set notes](../../raw/project-materials/humanz-ads/2026-08-22/README.md)
 - [System mapping DOCX](../../raw/project-materials/humanz-ads/2026-08-22/ads-system.docx)
 - [Architecture overview L1](../../raw/project-materials/humanz-ads/2026-08-22/architecture-diagrams/01-architecture-overview-l1.mmd)

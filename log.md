@@ -31,3 +31,10 @@ Append entries using this format:
 - Inputs: [source-set catalog](raw/project-materials/humanz-ads/2026-08-22/README.md), [system mapping](raw/project-materials/humanz-ads/2026-08-22/ads-system.docx), and 18 L1-L3 Mermaid diagrams
 - Outputs: [project overview](shared/projects/humanz-ads.md), [architecture](shared/projects/humanz-ads-architecture.md), [data flows](shared/projects/humanz-ads-data-flows.md), [risk and decision prompts](shared/projects/humanz-ads-risks-and-decisions.md), and [interview brief](domains/interviews/projects/humanz-ads.md)
 - Notes: user confirmed authorization to retain the internal materials in the private repository; no credential values were detected; system structure is documented, while personal ownership, chronology, scale, incidents, and impact remain unresolved
+
+## [2026-08-22] reflect | confirmed Humanz Ads greenfield starting point
+
+- Domain: interviews
+- Inputs: [reconstruction session 01](raw/session-notes/2026-08-22-humanz-ads-reconstruction-01.md)
+- Outputs: [project overview](shared/projects/humanz-ads.md), [interview brief](domains/interviews/projects/humanz-ads.md), and [reconstruction gaps](domains/interviews/gaps/humanz-ads-reconstruction.md)
+- Notes: Ido confirmed that no prior system existed; he and the CTO built the infrastructure from zero, with Ido responsible for architecture planning and code implementation; component-level responsibility and chronology remain open

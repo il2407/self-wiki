@@ -19,8 +19,9 @@ system's production guarantees and impact.
 
 ## Missing knowledge
 
-- Chronology and pre-existing baseline.
-- Direct implementation, design, leadership, and operational ownership.
+- Build chronology and sequence; the greenfield baseline is confirmed.
+- Component-level implementation, design, leadership, and operational ownership;
+  project-level architecture and code responsibility are confirmed.
 - Queue and workflow guarantees: atomic publication, idempotency, retry, DLQ,
   partial-success recovery, and reconciliation.
 - Workload scale, performance, availability, freshness, and cost.
@@ -41,4 +42,3 @@ available, and update the canonical project claim ledger.
 - At least one decision and one incident can withstand technical follow-ups.
 - The async creation flow can be explained through its failure paths, not only
   its happy path.
-

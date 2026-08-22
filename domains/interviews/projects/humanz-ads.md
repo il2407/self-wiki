@@ -28,7 +28,9 @@ before ownership, chronology, scale, decisions, and outcomes are confirmed.
 
 ## What only Ido can currently establish
 
-- What he personally built, designed, reviewed, operated, or inherited.
+- Component-level ownership and the division of responsibility with the CTO and
+  any later contributors. Project-level greenfield architecture and code
+  responsibility are now confirmed.
 - How the architecture evolved over time.
 - Scale, SLOs, incidents, and operational practices.
 - Historical alternatives and why decisions were made.
@@ -39,8 +41,9 @@ before ownership, chronology, scale, decisions, and outcomes are confirmed.
 Ask one question at a time and persist the answer with `recalled` status until
 supporting evidence is added.
 
-1. **Starting point:** What did Humanz Ads look like when Ido first became
-   involved?
+1. **Starting point:** Confirmed: no pre-existing system; Ido and the CTO built
+   the infrastructure from zero, with Ido responsible for architecture planning
+   and code implementation.
 2. **Timeline:** What were the major phases from the first version to the system
    represented in the diagrams?
 3. **Ownership:** For each phase, what did Ido implement directly, co-design,
