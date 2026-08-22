@@ -1,0 +1,13 @@
+.DS_Store
+.obsidian/workspace*.json
+.obsidian/cache
+node_modules/
+
+# Sensitive scratch data that should not be committed.
+private/
+secrets/
+*.pem
+*.key
+.env
+.env.*
+
