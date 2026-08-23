@@ -1,0 +1,18 @@
+flowchart TB
+    ADV[Advertiser]
+    UI[Ads Manager Web App]
+    API[Humanz Platform API]
+    HFBI[Meta Integration Layer]
+    WORKERS[Scheduled Sync Workers]
+    DB[(PostgreSQL)]
+    META[Meta Graph API]
+
+    ADV -->|create manage analyze| UI
+    UI -->|REST| API
+    API <-->|JWT auth HTTP| HFBI
+    API -->|queue creation tasks| WORKERS
+    HFBI <-->|create edit fetch| META
+    WORKERS -->|sync metrics and comments| HFBI
+    API <-->|read write| DB
+    HFBI -->|write ad data| DB
+    WORKERS -->|write sync data| DB

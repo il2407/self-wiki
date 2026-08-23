@@ -23,8 +23,10 @@ in Obsidian and an LLM agent can update through reviewable file changes.
 - Wiki pages are derived artifacts, not primary evidence.
 - An ingest operation proposes changes before applying them.
 - Querying does not modify files unless the user explicitly asks.
-- Secrets, credentials, and employer-confidential information do not belong in
-  the vault.
+- Secrets, credentials, proprietary source code, and customer data do not belong
+  in the vault. Internal employer material is allowed only after explicit
+  authorization is recorded beside the source and the repository's private
+  access remains appropriate.
 - The configured remote is private. Changing its visibility or adding another
   remote requires an explicit privacy decision.
 - Authentication credentials stay outside the vault and must never be committed.

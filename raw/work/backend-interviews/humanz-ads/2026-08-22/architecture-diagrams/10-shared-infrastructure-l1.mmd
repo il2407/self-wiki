@@ -1,0 +1,17 @@
+flowchart TB
+    BACKEND[Backend Java API]
+    HFBI_S[HFBI Python Service]
+    LAMBDAS_S[Lambda Workers]
+
+    subgraph SHARED_RES[Shared Resources]
+        DB_S[(PostgreSQL 10 plus tables)]
+        META_S[Meta Graph API]
+        META_CLIENT_S[AdsIGFGApiDal single Meta client]
+    end
+
+    BACKEND <-->|read write tasks metadata analytics| DB_S
+    HFBI_S <-->|read write all ads tables| DB_S
+    LAMBDAS_S -->|write sync data read campaigns| DB_S
+    HFBI_S --> META_CLIENT_S --> META_S
+    LAMBDAS_S -->|HTTP via HFBI app| META_CLIENT_S
+    BACKEND -->|HfbiHandler JWT HTTP| HFBI_S

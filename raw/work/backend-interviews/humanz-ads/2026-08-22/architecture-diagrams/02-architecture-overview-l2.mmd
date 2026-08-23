@@ -1,0 +1,62 @@
+flowchart TB
+    subgraph FE[Frontend - reactapp]
+        ADS_TAB[AdsAnalyticsTab]
+        CREATE[CreateAdModal]
+        EDIT_DUP[EditAdModal / DuplicateAdModal]
+    end
+
+    subgraph BE[Backend - Java Spring Boot]
+        MGMT_CTRL[AdsManagementApiController]
+        CREATE_CTRL[AdCreationApiController]
+        PARTNER_CTRL[AdsPartnerManagementApiController]
+        HFBI_CLIENT[HfbiHandler]
+        SQS_SVC[AdCreationSqsService]
+    end
+
+    subgraph HFBI_LAYER[HFBI - Python FastAPI]
+        ADS_ROUTER[Ads API Router /adsapi]
+        MGMT_SVC[AdsManagementService]
+        INSIGHTS_SVC[AdsInsightsService]
+        META_CLIENT[AdsIGFGApiDal]
+    end
+
+    subgraph LAMBDAS[Lambda Workers]
+        L_CREATE[hfbi-create-ad-task]
+        L_FETCH[hfbi-fetch-ads]
+        L_CAMPAIGNS[hfbi-fetch-ads-campaigns and metadata]
+        L_COMMENTS[hfbi-fetch-ads-comments and monthly spend]
+    end
+
+    subgraph DB_LAYER[PostgreSQL]
+        TASKS[(ad_creation_tasks)]
+        METADATA[(ads_metadata)]
+        INSIGHTS[(ads_posts_analysis)]
+        COMMENTS[(ads_media_comments)]
+        CAMPAIGNS[(hfbi_ads_campaign)]
+    end
+
+    SQS[(AWS SQS)]
+    SNS[(AWS SNS)]
+    META_EXT[Meta Graph API v22]
+
+    ADS_TAB --> MGMT_CTRL
+    CREATE --> CREATE_CTRL
+    EDIT_DUP --> MGMT_CTRL
+
+    MGMT_CTRL --> HFBI_CLIENT --> ADS_ROUTER
+    CREATE_CTRL --> SQS_SVC --> SQS --> L_CREATE --> ADS_ROUTER
+
+    ADS_ROUTER --> MGMT_SVC --> META_CLIENT --> META_EXT
+    ADS_ROUTER --> INSIGHTS_SVC --> META_CLIENT
+
+    L_FETCH --> ADS_ROUTER
+    L_CAMPAIGNS --> ADS_ROUTER
+    L_COMMENTS --> ADS_ROUTER
+    L_CREATE --> SNS
+
+    CREATE_CTRL --> TASKS
+    MGMT_CTRL --> INSIGHTS
+    MGMT_SVC --> METADATA
+    INSIGHTS_SVC --> INSIGHTS
+    L_COMMENTS --> COMMENTS
+    L_CAMPAIGNS --> CAMPAIGNS

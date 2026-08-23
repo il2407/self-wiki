@@ -1,0 +1,44 @@
+flowchart TB
+    subgraph FE_OWN[reactapp owns UI and UX]
+        FO1[AdsAnalyticsTab main container state]
+        FO2[CreateAdModal ad creation wizard bulk single]
+        FO3[EditAdModal and DuplicateAdModal]
+        FO4[AdsAnalyticsTable and Cubes]
+        FO5[CommentsBreakdownModal AdDetailsModal]
+        FO6[AdsSettings AdsNameTemplate MetaAdsAttributionTable]
+    end
+
+    subgraph BE_OWN[backend owns API surface orchestration]
+        BO1[AdsManagementApiController stats edit comments campaigns]
+        BO2[AdCreationApiController create single bulk]
+        BO3[AdsPartnerManagementApiController partner pages CRUD]
+        BO4[CampaignAdsSettingsApiController UI feature flags]
+        BO5[AdCreationService validation SQS enqueue]
+        BO6[HfbiHandler backend to HFBI HTTP bridge]
+        BO7[AdsManagementDal analytics read queries]
+    end
+
+    subgraph HFBI_OWN[hfbi owns Meta integration background sync]
+        HO1[AdsManagementService create edit copy]
+        HO2[AdsInsightsService insights comments]
+        HO3[AdsIGFGApiDal single Meta Graph API client]
+        HO4[apiDal commentsDal PostgreSQL write layer]
+        HO5[hfbi-create-ad-task SQS consumer]
+        HO6[hfbi-fetch-ads campaigns metadata]
+        HO7[hfbi-fetch-comments monthly spend video data]
+    end
+
+    subgraph SHARED_OWN[Shared Infrastructure no single owner]
+        SO1[(PostgreSQL ad_creation_tasks ads_metadata ads_posts_analysis)]
+        SO2[(PostgreSQL ads_media_comments hfbi_ads_campaign hfbi_users exchange_rates)]
+        SO3[Meta Graph API graph.facebook.com v22]
+        SO4[(AWS SQS SNS S3)]
+    end
+
+    FE_OWN -->|OpenAPI hooks| BE_OWN
+    BE_OWN -->|HfbiHandlerHttpImpl JWT signed| HFBI_OWN
+    BE_OWN -->|AdCreationSqsService| SO4
+    HFBI_OWN -->|all Meta ops| SO3
+    SO4 -->|SQS trigger| HO5
+    HO5 -->|HTTP /adsapi| HO1
+    BE_OWN & HFBI_OWN <--> SO1 & SO2

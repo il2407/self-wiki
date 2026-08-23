@@ -2,15 +2,15 @@
 type: working-plan
 domain: work
 topic: backend-interviews
-status: proposed
-updated: 2026-08-17
-sources: []
+status: active
+updated: 2026-08-23
+sources:
+  - raw/work/backend-interviews/humanz-ads/2026-08-22/ads-system.docx
 ---
 
 # מפת הידע
 
-זוהי מפת ניווט, לא תוכנית לימודים. היא תתעדכן לפי הידע שנוסף בפועל ותציג אילו
-תחומים מכוסים, היכן יש קשרים ואיפה קיימים פערים.
+זוהי מפת ניווט, לא תוכנית לימודים. היא מתעדכנת לפי הידע שנוסף בפועל.
 
 ## תחומים
 
@@ -24,14 +24,22 @@ sources: []
 - caching, queues ו־stream processing
 - בדיקות, debugging ו־observability
 - אבטחת Backend
-- cloud, containers ותהליכי deployment
-- ניסיון מקצועי ודיון בפרויקטים קודמים
+- cloud, containers ו־deployment
+- ניסיון מקצועי ודיון בפרויקטים
 - שאלות התנהגותיות ותקשורת טכנית
 
 ## דפים קיימים
 
-טרם נוצרו דפי מושגים מקצועיים.
+- [[humanz-ads]]
+- [[humanz-ads-architecture]]
+- [[humanz-ads-data-flows]]
+- [[humanz-ads-risks-and-decisions]]
+- [[humanz-ads-interview-practice]]
 
-## פערים ושאלות
+## פערים שזוהו מתוך Humanz Ads
 
-יתווספו מתוך הלמידה ולא כרשימת חובה כללית.
+- guarantees של יצירה אסינכרונית: atomicity, retries, idempotency ו־recovery.
+- scale, latency, freshness, SLOs ועלות.
+- incidents אמיתיים ומה השתנה בעקבותיהם.
+- מדידה וייחוס של טענות הביצועים וההכנסות בקורות החיים.
+- תרגול הסבר ownership שאינו מקטין את שיתוף הפעולה עם ה־CTO.

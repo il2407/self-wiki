@@ -1,0 +1,69 @@
+flowchart LR
+    subgraph FE[reactapp AdsAnalytics]
+        ATAB[AdsAnalyticsTab.tsx]
+        CMOD[CreateAdModal.tsx]
+        EMOD[EditAdModal.tsx]
+        DMOD[DuplicateAdModal.tsx]
+        ATABLE[AdsAnalyticsTable.tsx]
+        CUBES[AdsAnalyticsCubes.tsx]
+        CBMOD[CommentsBreakdownModal.tsx]
+    end
+
+    subgraph BE[backend media.moi.backend]
+        ACTRL[AdsManagementApiController]
+        CCCTRL[AdCreationApiController]
+        ASVC[AdsManagementService]
+        CSVC[AdCreationService]
+        HFBIH[HfbiHandlerHttpImpl]
+        SQSC[AdCreationSqsService]
+        MGMTDAL[AdsManagementDal]
+    end
+
+    subgraph HFBI_SVC[hfbi app src]
+        AROUTER[controllers adsApi.py]
+        MGTPYSVC[services ads_management_service.py]
+        INSPYSVC[services ads_insights_service.py]
+        METAGDAL[dal AdsIGFGApiDal.py]
+        PGDAL[dal postgres apiDal.py]
+    end
+
+    subgraph LAMS[hfbi Lambdas]
+        LCREATE[hfbi-create-ad-task.py]
+        LFETCH[hfbi-fetch-ads.py]
+        LCAMP[hfbi-fetch-ads-campaigns.py and metadata]
+        LCOMM[hfbi-fetch-ads-comments.py and monthly spend]
+    end
+
+    subgraph PG[PostgreSQL]
+        T_TASKS[(ad_creation_tasks)]
+        T_BLOCKED[(ad_creation_blocked)]
+        T_META[(ads_metadata)]
+        T_PERF[(ads_posts_analysis)]
+        T_COMM[(ads_media_comments)]
+        T_CAMP[(hfbi_ads_campaign)]
+        T_PARTNER[(advertiser_partnership_pages)]
+    end
+
+    SQS_Q[(AWS SQS ad_creation_queue)]
+    SNS_T[(AWS SNS ad creation status topic)]
+    GRAPH_API[Meta Graph API graph.facebook.com v22]
+
+    ATAB & ATABLE & CUBES --> ACTRL
+    CMOD --> CCCTRL
+    EMOD & DMOD --> ACTRL
+
+    ACTRL --> ASVC --> HFBIH --> AROUTER
+    CCCTRL --> CSVC --> SQSC --> SQS_Q --> LCREATE --> AROUTER
+    LCREATE --> SNS_T
+    LCREATE --> T_TASKS & T_BLOCKED
+
+    LFETCH & LCAMP & LCOMM --> AROUTER
+
+    AROUTER --> MGTPYSVC --> METAGDAL --> GRAPH_API
+    AROUTER --> INSPYSVC --> METAGDAL
+    MGTPYSVC --> PGDAL --> T_META
+    INSPYSVC --> PGDAL --> T_PERF
+    LCAMP --> T_CAMP
+    LCOMM --> T_COMM
+
+    MGMTDAL --> T_TASKS & T_PERF & T_META & T_COMM

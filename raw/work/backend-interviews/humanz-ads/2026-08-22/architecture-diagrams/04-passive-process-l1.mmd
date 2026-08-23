@@ -1,0 +1,13 @@
+flowchart LR
+    SCHEDULE[Scheduled Cron Jobs]
+    META[Meta Graph API]
+    PIPELINE[HFBI Data Pipeline]
+    DB[(Metrics Database)]
+    API[Platform API]
+    UI[Ads Manager Dashboard]
+
+    SCHEDULE -->|trigger sync| PIPELINE
+    PIPELINE <-->|pull campaigns insights comments| META
+    PIPELINE -->|write normalized rows| DB
+    DB -->|serve aggregated query| API
+    API -->|render| UI

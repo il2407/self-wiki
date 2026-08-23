@@ -1,0 +1,52 @@
+flowchart LR
+    subgraph L_CAMP_BOX[hfbi-fetch-ads-campaigns.py]
+        FN_CAMP[handler select campaigns and POST update_humanz_ad_campaigns]
+    end
+
+    subgraph L_META_BOX[hfbi-fetch-ads-metadata.py]
+        FN_META[handler batch active campaigns and POST update_ad_campaign_metadata]
+    end
+
+    subgraph L_FETCH_BOX[hfbi-fetch-ads.py producer consumer]
+        FN_PROD[producer_handler select hfbi_ads_campaign chunk by CAMPAIGN_CHUNK_SIZE send to SQS]
+        FN_CONS[consumer_handler process SQS batch POST update_ad_campaign_insights]
+        FN_PROD -->|SQS per chunk| FN_CONS
+    end
+
+    subgraph L_COMM_BOX[hfbi-fetch-ads-comments.py]
+        FN_COMM[handler filter by comments_last_fetched_at POST fetch_campaign_ig_comments]
+    end
+
+    subgraph HFBI_DETAIL[hfbi AdsInsightsService]
+        UPD_CAMP[update_humanz_ad_campaigns extract_and_insert_campaigns]
+        UPD_META[update_campaign_metadata extract_and_insert_ads_metadata]
+        UPD_INS[update_campaign_insights breakdowns daily hourly country windows 1d_click 7d_click 1d_view]
+        FETCH_COMM_FN[fetch_campaign_ig_comments upsert_media_comments]
+        GRAPH_CALL[AdsIGFGApiDal fields AD_FIELDS AD_METADATA_FIELDS ACTION_ATTRIBUTION_WINDOWS]
+    end
+
+    DB_CAMP2[(hfbi_ads_campaign permission and update status)]
+    DB_META2[(ads_metadata ad details creative custom conversions)]
+    DB_PERF2[(ads_posts_analysis spend impressions clicks purchases roas attribution)]
+    DB_COMM2[(ads_media_comments text username classification)]
+    META_GRAPH2[Meta Graph API insights ads Instagram comments]
+
+    FN_CAMP --> UPD_CAMP --> GRAPH_CALL --> META_GRAPH2
+    FN_META --> UPD_META --> GRAPH_CALL
+    FN_CONS --> UPD_INS --> GRAPH_CALL
+    FN_COMM --> FETCH_COMM_FN --> GRAPH_CALL
+
+    UPD_CAMP --> DB_CAMP2
+    UPD_META --> DB_META2
+    UPD_INS --> DB_PERF2
+    FETCH_COMM_FN --> DB_COMM2
+
+    subgraph BACKEND_READ[backend AdsManagementDal.getAdStats]
+        SQL_Q[SQL join ads_posts_analysis ads_metadata date filters aggregation]
+    end
+
+    DB_PERF2 & DB_META2 --> SQL_Q
+    DB_COMM2 --> SQL_Q
+
+    DISPLAY2[AdsAnalyticsTable Cubes CommentsBreakdownModal]
+    SQL_Q --> DISPLAY2

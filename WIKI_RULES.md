@@ -23,7 +23,11 @@ Initial domains are `work`, `history`, and `culture`.
 - Never use a cultural or historical source as evidence for a work claim merely
   because the topics are related.
 - Sensitive work material should be moved to a separate repository before it is
-  ingested if it requires different access or model-data controls.
+  ingested if it requires different access or model-data controls. Employer
+  material may remain in this private repository only after the user explicitly
+  confirms authorization to retain it, the authorization is recorded beside
+  the source, and no credentials, proprietary source code, customer data, or
+  other unnecessary secrets are included.
 
 ## Source rules
 
@@ -100,4 +104,3 @@ contradictions.
 - Write user-facing synthesis in Hebrew by default. Preserve important original
   terminology in parentheses when translation could reduce precision.
 - Keep summaries concise and make uncertainty visible.
-

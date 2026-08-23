@@ -1,0 +1,36 @@
+flowchart LR
+    subgraph BE_BOX[Backend owns API auth task lifecycle]
+        BE_W[WRITES ad_creation_tasks advertiser_partnership_pages campaign_ads_settings]
+        BE_R[READS ads_posts_analysis ads_metadata ads_media_comments hfbi_ads_campaign]
+    end
+
+    subgraph HFBI_BOX[HFBI owns Meta integration metrics ingest]
+        HFBI_W[WRITES ads_metadata ads_posts_analysis ads_media_comments hfbi_ads_campaign bo_saved_ad_ids]
+        HFBI_R[READS hfbi_users tokens hfbi_ads_campaign exchange_rates]
+    end
+
+    subgraph LAM_BOX[Lambdas owns scheduled sync creation execution]
+        LAM_W[WRITES ad_creation_tasks status ad_creation_blocked hfbi_ads_campaign last_update]
+        LAM_R[READS hfbi_ads_campaign ad_creation_tasks hfbi_users]
+    end
+
+    subgraph SHARED_DB_BOX[Shared PostgreSQL]
+        ST1[(ad_creation_tasks W backend plus lambda R lambda)]
+        ST2[(ads_metadata W hfbi R backend)]
+        ST3[(ads_posts_analysis W hfbi R backend)]
+        ST4[(hfbi_ads_campaign W hfbi plus lambda R all)]
+        ST5[(ads_media_comments W hfbi R backend)]
+        ST6[(hfbi_users R hfbi plus lambda tokens)]
+    end
+
+    subgraph SHARED_META_BOX[Shared Meta API Client]
+        META_C[AdsIGFGApiDal.py single client for all Meta calls]
+        META_E[Meta Graph API graph.facebook.com v22]
+        META_C --> META_E
+    end
+
+    BE_W & BE_R <--> ST1 & ST2 & ST3 & ST4 & ST5
+    HFBI_W & HFBI_R <--> ST1 & ST2 & ST3 & ST4 & ST5 & ST6
+    LAM_W & LAM_R <--> ST1 & ST4 & ST6
+    HFBI_W --> META_C
+    LAM_W -->|via HFBI HTTP| META_C

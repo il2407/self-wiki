@@ -1,0 +1,18 @@
+flowchart TB
+    subgraph FE_TEAM[reactapp Frontend Team]
+        FE_RESP[Ads Manager UI campaign tab modals stats table charts settings name templates]
+    end
+
+    subgraph BE_TEAM[backend Platform API Team]
+        BE_RESP[API contract auth task creation validation partner pages campaign settings]
+    end
+
+    subgraph HFBI_TEAM[hfbi Integration Team]
+        HFBI_RESP[All Meta API calls ad creation execution metrics sync comments currency]
+    end
+
+    SHARED_RESP[Shared Infrastructure PostgreSQL AWS SQS AWS SNS Meta credentials exchange_rates]
+
+    FE_TEAM -->|REST OpenAPI generated client| BE_TEAM
+    BE_TEAM -->|JWT HTTP HfbiHandler| HFBI_TEAM
+    BE_TEAM & HFBI_TEAM <-->|read write| SHARED_RESP
