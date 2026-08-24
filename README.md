@@ -1,55 +1,50 @@
-# ה־Self Wiki שלי
+# My Self Wiki
 
-זהו מאגר ידע אישי רב־תחומי שנועד לעבודה עם Codex או Claude Code ולצפייה
-ב־Obsidian. המקורות המקוריים נשמרים בנפרד; הסוכן יוצר מעליהם Wiki מסונתז עם
-הפניות למקורות.
+This is a personal, multidisciplinary knowledge repository designed for use with Codex or Claude Code and for viewing in Obsidian. Original sources are stored separately; the agent builds a synthesized wiki on top of them, with references to the sources.
 
-## המבנה
+## Structure
 
 ```text
 self-wiki/
-├── raw/                 # מקורות מקוריים — לא משנים
+├── raw/                 # Original sources — never modify
 │   ├── work/
 │   ├── history/
 │   └── culture/
-├── wiki/                # ידע מסונתז שהסוכן מתחזק
+├── wiki/                # Synthesized knowledge maintained by the agent
 │   ├── work/
 │   ├── history/
 │   └── culture/
 ├── templates/
-├── AGENTS.md            # כניסה ל-Codex
-├── CLAUDE.md            # כניסה ל-Claude Code
-├── WIKI_RULES.md        # כללי העבודה המשותפים
-├── index.md             # קטלוג תוכן
-└── log.md               # היסטוריית פעולות
+├── AGENTS.md            # Entry point for Codex
+├── CLAUDE.md            # Entry point for Claude Code
+├── WIKI_RULES.md        # Shared operating rules
+├── index.md             # Content catalog
+└── log.md               # Activity history
 ```
 
-## קליטת המקור הראשון
+## Ingesting the First Source
 
-1. העתק מקור אחד לתיקייה המתאימה תחת `raw/`.
-2. פתח את התיקייה הזאת כפרויקט ב־Codex או כ־Vault ב־Obsidian.
-3. כתוב לסוכן:
+1. Copy one source into the appropriate folder under `raw/`.
+2. Open this folder as a project in Codex or as a vault in Obsidian.
+3. Write the following to the agent:
 
-> קרא את WIKI_RULES.md. בדוק את המקור החדש תחת raw/. בצע רק את שלב ההצעה:
-> הצג את עיקרי המקור, המגבלות שלו ותוכנית מדויקת של הדפים שתיצור או תעדכן.
-> אל תשנה עדיין את ה-Wiki.
+> Read `WIKI_RULES.md`. Review the new source under `raw/`. Perform only the proposal stage: present the source’s key points, its limitations, and a precise plan of the pages you will create or update. Do not modify the wiki yet.
 
-4. בדוק את התוכנית. אם היא נכונה, כתוב:
+4. Review the plan. If it is correct, write:
 
-> אני מאשר את התוכנית. החל אותה לפי WIKI_RULES.md ודווח אילו קבצים השתנו.
+> I approve the plan. Apply it according to `WIKI_RULES.md` and report which files were changed.
 
-## שאילתות לדוגמה
+## Example Queries
 
-- מה ה־Wiki יודע כרגע על הנושא, ועל אילו מקורות הוא מסתמך?
-- היכן המקורות סותרים זה את זה?
-- אילו טענות נשענות על מקור יחיד בלבד?
-- אילו שאלות חשובות עדיין אינן פתורות?
+- What does the wiki currently know about this topic, and which sources does it rely on?
+- Where do the sources contradict one another?
+- Which claims rely on only a single source?
+- Which important questions remain unresolved?
 
-שאילתה אינה משנה את ה־Wiki אלא אם מבקשים זאת במפורש.
+A query does not modify the wiki unless explicitly requested.
 
-## בדיקת תקינות
+## Validation
 
-לאחר כמה קליטות:
+After ingesting several sources:
 
-> בצע lint לפי WIKI_RULES.md. הצג ממצאים בלבד ואל תשנה קבצים ללא אישור.
-
+> Run lint checks according to `WIKI_RULES.md`. Present the findings only, and do not modify any files without approval.
